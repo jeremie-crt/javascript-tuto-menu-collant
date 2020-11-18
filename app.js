@@ -1,5 +1,4 @@
 (function() {
-
     var scrollY = function() {
         var supportPageOffset = window.pageXOffset !== undefined;
         var isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
@@ -16,7 +15,7 @@
         }
         var constraintRect = constraint.getBoundingClientRect()
         var constraintBottom = constraintRect.top + scrollY() + constraintRect.height - offset - rect.height
-        var top = rect.top + scrollY
+        var top = rect.top + scrollY()
         var fake = document.createElement('div')
         fake.style.width = rect.width + "px"
         fake.style.height = rect.height + "px"
@@ -27,7 +26,7 @@
                 element.style.position = "absolute"
                 element.style.bottom = "0"
                 element.style.top = "auto"
-            } else if(scrollY() > top - offset && scrollY() < constraintBottom && element.style.position === 'absolute') {
+            } else if(scrollY() > top - offset && scrollY() < constraintBottom && element.style.position != 'fixed') {
                 element.classList.add('fixed')
                 element.style.position = "fixed"
                 element.style.top = offset + "px"
@@ -63,10 +62,9 @@
         window.addEventListener('resize', onResize)
     }
 
-
    var elements = document.querySelectorAll('[data-sticky]')
    for(var i = 0; i < elements.length; i++) {
-       makeSticky(element[i])
+       makeSticky(elements[i])
    }
 
 })()
